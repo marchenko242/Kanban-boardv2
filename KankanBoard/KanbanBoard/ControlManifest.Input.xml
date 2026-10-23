@@ -2,11 +2,16 @@
 <manifest>
   <control namespace="ITDeliveryHub"
     constructor="KanbanBoard"
-    version="1.0.0"
+    version="1.0.3"
     display-name-key="Sprint Kanban Board"
     description-key="Drag-and-drop Kanban board for Dataverse tasks"
     control-type="virtual">
-
+    <type-group name="numbers">
+      <type>Whole.None</type>
+      <type>Currency</type>
+      <type>FP</type>
+      <type>Decimal</type>
+    </type-group>
     <!-- ===== DATASET (bound to Items in Canvas) ===== -->
     <data-set name="tasks" display-name-key="Tasks">
       <property-set name="taskId" display-name-key="Task ID (GUID as text)"
@@ -17,11 +22,11 @@
         of-type="SingleLine.Text" usage="bound" required="true" />
       <property-set name="assignee" display-name-key="Assigned Developer" of-type="SingleLine.Text"
         usage="bound" required="false" />
-      <property-set name="estimatedHours" display-name-key="Estimated Hours" of-type="Decimal"
+      <property-set name="estimatedHours" display-name-key="Estimated Hours" of-type-group="numbers"
         usage="bound" required="false" />
-      <property-set name="actualHours" display-name-key="Actual Hours" of-type="Decimal"
+      <property-set name="actualHours" display-name-key="Actual Hours" of-type-group="numbers"
         usage="bound" required="false" />
-      <property-set name="dueDate" display-name-key="Due Date" of-type="DateAndTime.DateOnly"
+      <property-set name="dueDate" display-name-key="Due Date (text)" of-type="SingleLine.Text"
         usage="bound" required="false" />
       <property-set name="deadlineStatus" display-name-key="DeadLine Status (text)"
         of-type="SingleLine.Text" usage="bound" required="false" />

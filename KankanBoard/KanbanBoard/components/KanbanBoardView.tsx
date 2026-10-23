@@ -21,7 +21,8 @@ export interface IKanbanBoardViewProps {
   onSelect: (taskId: string) => void;
 }
 
-const slug = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+const slug = (s: unknown): string =>
+  (typeof s === "string" ? s : "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
 const initials = (name: string): string =>
   name

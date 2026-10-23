@@ -51,7 +51,7 @@ export class KanbanBoard implements ComponentFramework.ReactControl<IInputs, IOu
                 assignee: this.text(r, "assignee"),
                 estimatedHours: Number(r.getValue("estimatedHours") ?? 0) || 0,
                 actualHours: Number(r.getValue("actualHours") ?? 0) || 0,
-                dueDate: r.getFormattedValue("dueDate") ?? "",
+                dueDate: this.text(r, "dueDate"),
                 deadlineStatus: this.text(r, "deadlineStatus"),
             };
         });
@@ -86,14 +86,20 @@ export class KanbanBoard implements ComponentFramework.ReactControl<IInputs, IOu
     // ---------- helpers ----------
 
     private text(record: ComponentFramework.PropertyHelper.DataSetApi.EntityRecord, col: string): string {
-        const formatted = record.getFormattedValue(col);
-        if (formatted) return formatted;
+        const formatted: unknown = record.getFormattedValue(col);
+        if (typeof formatted === "string" && formatted.length > 0) return formatted;
 
-        const raw = record.getValue(col);
+        const raw: unknown = record.getValue(col);
         if (raw === null || raw === undefined) return "";
         if (typeof raw === "string") return raw;
         if (typeof raw === "number" || typeof raw === "boolean") return raw.toString();
         if (raw instanceof Date) return raw.toISOString();
+        if (typeof raw === "object") {
+            // Choice/lookup values arrive as objects in Canvas
+            const obj = raw as { Value?: unknown; name?: unknown };
+            if (typeof obj.Value === "string") return obj.Value;
+            if (typeof obj.name === "string") return obj.name;
+        }
         return "";
     }
 
