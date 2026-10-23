@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <control namespace="ITDeliveryHub"
+    constructor="KanbanBoard"
+    version="1.0.0"
+    display-name-key="Sprint Kanban Board"
+    description-key="Drag-and-drop Kanban board for Dataverse tasks"
+    control-type="virtual">
+
+    <!-- ===== DATASET (bound to Items in Canvas) ===== -->
+    <data-set name="tasks" display-name-key="Tasks">
+      <property-set name="taskId" display-name-key="Task ID (GUID as text)"
+        of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="title" display-name-key="Title" of-type="SingleLine.Text" usage="bound"
+        required="true" />
+      <property-set name="taskStatus" display-name-key="Task Status (text)"
+        of-type="SingleLine.Text" usage="bound" required="true" />
+      <property-set name="assignee" display-name-key="Assigned Developer" of-type="SingleLine.Text"
+        usage="bound" required="false" />
+      <property-set name="estimatedHours" display-name-key="Estimated Hours" of-type="Decimal"
+        usage="bound" required="false" />
+      <property-set name="actualHours" display-name-key="Actual Hours" of-type="Decimal"
+        usage="bound" required="false" />
+      <property-set name="dueDate" display-name-key="Due Date" of-type="DateAndTime.DateOnly"
+        usage="bound" required="false" />
+      <property-set name="deadlineStatus" display-name-key="DeadLine Status (text)"
+        of-type="SingleLine.Text" usage="bound" required="false" />
+    </data-set>
+
+    <!-- ===== INPUTS ===== -->
+    <property name="StatusList"
+      display-name-key="Status columns (comma separated)"
+      description-key="Column order, e.g. Backlog,In Progress,In Review,Done,Blocked"
+      of-type="SingleLine.Text"
+      usage="input"
+      default-value="Backlog,In Progress,In Review,Done,Blocked" />
+
+    <!-- ===== OUTPUTS (read in Power Fx) ===== -->
+    <property name="MovedTaskId" display-name-key="Moved Task ID" of-type="SingleLine.Text"
+      usage="output" />
+    <property name="MovedFromStatus" display-name-key="Moved From Status" of-type="SingleLine.Text"
+      usage="output" />
+    <property name="MovedToStatus" display-name-key="Moved To Status" of-type="SingleLine.Text"
+      usage="output" />
+    <property name="SelectedTaskId" display-name-key="Selected Task ID" of-type="SingleLine.Text"
+      usage="output" />
+
+    <!-- ===== EVENTS (appear as behavior properties in Canvas) ===== -->
+    <event name="OnTaskMoved" display-name-key="OnTaskMoved"
+      description-key="Fires when a card is dropped in another column" />
+    <event name="OnCardSelected" display-name-key="OnCardSelected"
+      description-key="Fires when a card is clicked" />
+
+    <resources>
+      <code path="index.ts" order="1" />
+      <css path="css/KanbanBoard.css" order="1" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+  </control>
+</manifest>
